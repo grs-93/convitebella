@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aniversário da Bella</title>
 
-  <!-- Fonte elegante -->
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Montserrat:wght@400;500&display=swap" rel="stylesheet">
 
   <style>
@@ -20,6 +19,13 @@
       max-width: 480px;
       margin: auto;
       padding: 24px;
+    }
+
+    .hero-image {
+      width: 100%;
+      border-radius: 20px;
+      margin-bottom: 18px;
+      box-shadow: 0 6px 14px rgba(0,0,0,0.08);
     }
 
     h1 {
@@ -40,7 +46,24 @@
       text-align: center;
       font-size: 14px;
       color: #8c6b4f;
-      margin-bottom: 28px;
+      margin-bottom: 20px;
+    }
+
+    .music-control {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 26px;
+    }
+
+    .btn-music {
+      padding: 10px 22px;
+      border-radius: 24px;
+      border: none;
+      background-color: #b38a4c;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
     }
 
     .buttons {
@@ -70,10 +93,6 @@
       color: #fff;
     }
 
-    .info {
-      margin-bottom: 24px;
-    }
-
     .info-item {
       margin-bottom: 12px;
       font-size: 15px;
@@ -85,7 +104,8 @@
       font-weight: 500;
     }
 
-    .section-message {
+    .section-message,
+    .section-gifts {
       background-color: #fff;
       border-radius: 16px;
       padding: 18px;
@@ -93,135 +113,210 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    .section-message h2 {
+    .section-message h2,
+    .section-gifts h2 {
       font-family: 'Playfair Display', serif;
       font-size: 20px;
       margin-bottom: 10px;
       color: #b38a4c;
     }
 
-    .section-message p {
+    .gift-list {
+      margin: 0;
+      padding-left: 18px;
       font-size: 15px;
-      line-height: 1.6;
     }
 
-    .calendar {
-      margin-top: 18px;
+    .gift-list li {
+      margin-bottom: 8px;
     }
 
-    .calendar a {
+    .bitcoin {
+      margin-top: 14px;
+      padding: 12px;
+      border-radius: 12px;
+      background-color: #fff3cd;
+      color: #7a5b2e;
+      font-weight: 600;
+      text-align: center;
+      animation: blink 1.2s infinite;
+      border: 2px dashed #e0b973;
+    }
+
+    @keyframes blink {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    /* ===== POPUP CALENDÁRIO ===== */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 18px;
+      padding: 22px;
+      width: 90%;
+      max-width: 320px;
+      text-align: center;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .modal-content h3 {
+      font-family: 'Playfair Display', serif;
+      color: #b38a4c;
+      margin-bottom: 16px;
+    }
+
+    .modal-btn {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 10px;
+      border-radius: 24px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      font-weight: 500;
+      background-color: #9c6b8f;
+      color: #fff;
+    }
+
+    .modal-close {
+      margin-top: 6px;
       font-size: 14px;
       color: #9c6b8f;
-      text-decoration: none;
-      font-weight: 500;
-    }
-
-    iframe {
-      display: none;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
-  <!-- Música de fundo -->
-  <iframe
-    id="music"
-    src="https://www.youtube.com/embed/AYaX-NIUkw0?autoplay=1&mute=1&loop=1&playlist=AYaX-NIUkw0"
-    allow="autoplay"
-  ></iframe>
+<audio id="music" loop>
+  <source src="https://raw.githubusercontent.com/grs-93/convitebella/main/musica.mp3" type="audio/mpeg">
+</audio>
 
-  <div class="container">
-    <h1>Aniversário da Bella</h1>
+<div class="container">
 
-    <p class="subtitle">
-      Confirme sua presença e ajude o anfitrião a organizar a festa
-    </p>
+  <img src="https://raw.githubusercontent.com/grs-93/convitebella/main/Bella.png" alt="Bella" class="hero-image">
 
-    <p class="deadline">
-      Prazo para confirmações até 10/04/2026
-    </p>
-
-    <div class="buttons">
-      <button class="btn btn-confirm" onclick="confirmarPresenca()">
-        Eu vou :)
-      </button>
-      <button class="btn btn-decline" onclick="naoVou()">
-        Não vou...
-      </button>
-    </div>
-
-    <div class="info">
-      <div class="info-item">
-        📅 10/04/2026 – entre 19:00 e 22:30
-        <div class="calendar">
-          <a href="#" onclick="abrirCalendario()">Adicionar ao calendário</a>
-        </div>
-      </div>
-
-      <div class="info-item">
-        📍 Petit Poá<br>
-        Rua Izaac Ferreira da Cruz, 908 – Pinheirinho, Curitiba – PR, 81870-000<br>
-        <a class="link" target="_blank"
-           href="https://www.google.com/maps/search/?api=1&query=Rua+Izaac+Ferreira+da+Cruz+908+Curitiba">
-          Ver no mapa
-        </a>
-      </div>
-    </div>
-
-    <div class="section-message">
-      <h2>Uma mensagem especial</h2>
-      <p>
-        Esse será um momento muito especial e preparado com carinho.
-        Sua presença vai deixar tudo ainda mais completo.
-        Esperamos você para celebrar esse dia conosco.
-      </p>
-    </div>
+  <div class="music-control">
+    <button class="btn-music" onclick="toggleMusic()">Ativar música</button>
   </div>
 
-  <script>
-    function confirmarPresenca() {
-      window.location.href = "https://forms.gle/4qMrMk5enNpZkUEA8";
+  <h1>Aniversário da Bella</h1>
+
+  <p class="subtitle">Confirme sua presença e ajude o anfitrião a organizar a festa</p>
+
+  <p class="deadline">Prazo para confirmações até 31/03/2026</p>
+
+    <div class="buttons">
+    <button class="btn btn-confirm" onclick="confirmarPresenca()">💗 Eu vou</button>
+    <button class="btn btn-decline" onclick="naoVou()">🥹 Não vou</button>
+  </div>
+
+  <div class="info-item">📅 10/04/2026 – entre 19:00 e 22:30
+  <div class="info-item">
+    <a href="#" class="link" onclick="abrirCalendario(); return false;">Adicionar ao seu calendário</a>
+  </div>
+
+  
+
+  <div class="info-item">
+    📍 Petit Poá<br>
+    Rua Izaac Ferreira da Cruz, 908 – Curitiba<br>
+    <a class="link" target="_blank"
+      href="https://www.google.com/maps/search/?api=1&query=Rua+Izaac+Ferreira+da+Cruz+908+Curitiba">
+      Ver no mapa
+    </a>
+  </div>
+
+  <div class="section-message">
+    <h2>Vou fazer 1 ano!</h2>
+    <p>Meu aniversário está chegando e espero você para um dia de muita diversão!
+      Venha fazer parte desta data especial e curtir esse momento comigo!</p>
+  </div>
+
+  <div class="section-gifts">
+    <h2>🎁 Sugestões de presente</h2>
+    <p>
+      Para facilitar, deixamos abaixo algumas sugestões de presente.
+      Fique à vontade para escolher o que preferir.
+    </p>
+
+    <ul class="gift-list">
+      <li>Roupas tamanho 1 ou 2</li>
+      <li>Calçados tamanho 20</li>
+      <li>Brinquedos</li>
+    </ul>
+
+   <!-- <div class="bitcoin">💰 Bitcoin (essa sugestão foi escolhida pelo pai, claramente)</div>-->
+  </div>
+
+</div>
+
+<!-- POPUP -->
+<div class="modal" id="calendarModal" onclick="fecharModal(event)">
+  <div class="modal-content">
+    <h3>Adicionar ao calendário</h3>
+    <button class="modal-btn" onclick="abrirGoogle()">Google Agenda</button>
+    <button class="modal-btn" onclick="abrirApple()">Apple Calendar</button>
+    <div class="modal-close" onclick="fecharModal()">Fechar</div>
+  </div>
+</div>
+
+<script>
+  const music = document.getElementById("music");
+  const button = document.querySelector(".btn-music");
+
+  function toggleMusic() {
+    if (music.paused) {
+      music.volume = 0.6;
+      music.play();
+      button.textContent = "Pausar música";
+    } else {
+      music.pause();
+      button.textContent = "Ativar música";
     }
+  }
 
-    function naoVou() {
-      window.location.href = "https://forms.gle/4qMrMk5enNpZkUEA8";
+  function confirmarPresenca() {
+    window.location.href = "https://forms.gle/4qMrMk5enNpZkUEA8";
+  }
+
+  function naoVou() {
+    window.location.href = "https://forms.gle/4qMrMk5enNpZkUEA8";
+  }
+
+  function abrirCalendario() {
+    document.getElementById("calendarModal").style.display = "flex";
+  }
+
+  function fecharModal(e) {
+    if (!e || e.target.id === "calendarModal") {
+      document.getElementById("calendarModal").style.display = "none";
     }
+  }
 
-    function abrirCalendario() {
-      const start = "20260410T220000Z";
-      const end = "20260411T013000Z";
-      const title = encodeURIComponent("Aniversário da Bella");
-      const details = encodeURIComponent("Festa de aniversário da Bella");
-      const location = encodeURIComponent("Rua Izaac Ferreira da Cruz, 908 - Curitiba");
+  function abrirGoogle() {
+    window.open(
+      "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aniversário+da+Bella&dates=20260410T220000Z/20260411T013000Z&location=Petit+Poá,+Curitiba",
+      "_blank"
+    );
+  }
 
-      const isApple = /iPhone|iPad|Mac/i.test(navigator.userAgent);
-
-      if (isApple) {
-        window.location.href =
-          `data:text/calendar;charset=utf8,BEGIN:VCALENDAR
-VERSION:2.0
-BEGIN:VEVENT
-DTSTART:${start}
-DTEND:${end}
-SUMMARY:${title}
-LOCATION:${location}
-DESCRIPTION:${details}
-END:VEVENT
-END:VCALENDAR`;
-      } else {
-        window.open(
-          `https://www.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${start}/${end}&details=${details}&location=${location}`,
-          "_blank"
-        );
-      }
-    }
-
-    // Libera o som no primeiro toque
-    document.body.addEventListener("click", () => {
-      const iframe = document.getElementById("music");
-      iframe.src = iframe.src.replace("mute=1", "mute=0");
-    }, { once: true });
-  </script>
+  function abrirApple() {
+    window.location.href =
+      "data:text/calendar;charset=utf8,BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Aniversário da Bella\nDTSTART:20260410T190000\nDTEND:20260410T223000\nLOCATION:Petit Poá, Rua Izaac Ferreira da Cruz, 908, Curitiba\nEND:VEVENT\nEND:VCALENDAR";
+  }
+</script>
 
 </body>
 </html>
