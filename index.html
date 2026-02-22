@@ -305,16 +305,53 @@
     }
   }
 
+  // ===== CALENDÁRIO =====
+  const diaEvento = '2026-04-10';
+  const horaInicioSP = '19:00';
+  const horaFimSP = '22:30';
+
+  function formatarUTC(dataStr, horaStr) {
+    const [ano, mes, dia] = dataStr.split('-').map(Number);
+    const [h, m] = horaStr.split(':').map(Number);
+    const dt = new Date(Date.UTC(ano, mes-1, dia, h+3, m, 0)); // UTC-3 -> UTC
+    const Y = dt.getUTCFullYear();
+    const M = String(dt.getUTCMonth()+1).padStart(2,'0');
+    const D = String(dt.getUTCDate()).padStart(2,'0');
+    const H = String(dt.getUTCHours()).padStart(2,'0');
+    const Min = String(dt.getUTCMinutes()).padStart(2,'0');
+    const S = String(dt.getUTCSeconds()).padStart(2,'0');
+    return `${Y}${M}${D}T${H}${Min}${S}Z`;
+  }
+
+  const inicioUTC = formatarUTC(diaEvento, horaInicioSP);
+  const fimUTC = formatarUTC(diaEvento, horaFimSP);
+  const titulo = encodeURIComponent('Aniversário da Bella');
+  const detalhes = encodeURIComponent('Festa de aniversário da Bella');
+  const local = encodeURIComponent('Petit Poá, Rua Izaac Ferreira da Cruz, 908, Curitiba');
+
+  const googleURL = `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${titulo}&dates=${inicioUTC}%2F${fimUTC}&details=${detalhes}&location=${local}`;
+
+  function gerarICS() {
+    const conteudoICS = `BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Aniversário da Bella
+DTSTART:${inicioUTC}
+DTEND:${fimUTC}
+DESCRIPTION:Festa de aniversário da Bella
+LOCATION:Petit Poá, Rua Izaac Ferreira da Cruz, 908, Curitiba
+END:VEVENT
+END:VCALENDAR`;
+    const blob = new Blob([conteudoICS], {type:'text/calendar;charset=utf-8'});
+    return URL.createObjectURL(blob);
+  }
+
   function abrirGoogle() {
-    window.open(
-      "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Aniversário+da+Bella&dates=20260410T220000Z/20260411T013000Z&location=Petit+Poá,+Curitiba",
-      "_blank"
-    );
+    window.open(googleURL, '_blank');
   }
 
   function abrirApple() {
-    window.location.href =
-      "data:text/calendar;charset=utf8,BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Aniversário da Bella\nDTSTART:20260410T190000\nDTEND:20260410T223000\nLOCATION:Petit Poá, Rua Izaac Ferreira da Cruz, 908, Curitiba\nEND:VEVENT\nEND:VCALENDAR";
+    window.location.href = gerarICS();
   }
 </script>
 
